@@ -5,19 +5,19 @@ def relu_activation(arr: np.ndarray) -> np.ndarray:
     Applies the Rectified Linear Unit (ReLU) activation element-wise.
     Returns a new array where all negative values are replaced with 0.
     """
-    raise NotImplementedError("Function not implemented")
+    return np.maximum(arr, 0)
 
 def calculate_euclidean_distance(v1: np.ndarray, v2: np.ndarray) -> float:
     """
     Given two 1D arrays (vectors) of the same length, return the Euclidean distance between them.
     """
-    raise NotImplementedError("Function not implemented")
+    return np.linalg.norm(v1 - v2)
 
 def matrix_multiplication(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     """
     Returns the matrix multiplication of 2D arrays A and B.
     """
-    raise NotImplementedError("Function not implemented")
+    return np.dot(A, B)
 
 def normalize_data(X: np.ndarray) -> np.ndarray:
     """
@@ -25,14 +25,18 @@ def normalize_data(X: np.ndarray) -> np.ndarray:
     Returns a new array where each feature (column) has mean 0 and standard deviation 1.
     If a column has 0 standard deviation, its normalized values should be 0.
     """
-    raise NotImplementedError("Function not implemented")
+    mean = np.mean(X, axis=0)
+    std = np.std(X, axis=0)
+    # Avoid division by zero
+    std = np.where(std == 0, 1, std)
+    return (X - mean) / std
 
 def one_hot_encode(labels: np.ndarray, num_classes: int) -> np.ndarray:
     """
     Converts a 1D array of integer class labels (0 to num_classes-1) to a 2D one-hot encoding matrix.
     Shape of output should be (len(labels), num_classes).
     """
-    raise NotImplementedError("Function not implemented")
+
 
 def softmax_activation(logits: np.ndarray) -> np.ndarray:
     """

@@ -1,1 +1,1 @@
-cmd /k cd C:\Users\User\Documents\GitHub\AIRC-201-Practice\
+cmd /k cd C:\Users\User\Documents\GitHub\AIRC-201-Practice\ && git status
