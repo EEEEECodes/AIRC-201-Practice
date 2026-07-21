@@ -36,7 +36,7 @@ def one_hot_encode(labels: np.ndarray, num_classes: int) -> np.ndarray:
     Converts a 1D array of integer class labels (0 to num_classes-1) to a 2D one-hot encoding matrix.
     Shape of output should be (len(labels), num_classes).
     """
-
+    return np.eye(num_classes)[labels]
 
 def softmax_activation(logits: np.ndarray) -> np.ndarray:
     """
@@ -44,21 +44,28 @@ def softmax_activation(logits: np.ndarray) -> np.ndarray:
     Subtract the maximum logit of each row for numerical stability.
     Returns a 2D array of probabilities where each row sums to 1.
     """
-    raise NotImplementedError("Function not implemented")
+    # Subtract the maximum logit for numerical stability
+    logits_shifted = logits - np.max(logits, axis=1, keepdims=True)
+    exp_logits = np.exp(logits_shifted)
+    return exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
 
 def find_k_nearest_neighbors(data: np.ndarray, query: np.ndarray, k: int) -> np.ndarray:
     """
     Given a 2D array of data points (samples x features) and a 1D query point (features),
     return the indices of the 'k' closest points in 'data' using Euclidean distance.
     """
-    raise NotImplementedError("Function not implemented")
+    distances = np.linalg.norm(data - query, axis=1)
+    return np.argpartition(distances, k)[:k]
 
 def compute_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int) -> np.ndarray:
     """
     Computes a confusion matrix C of shape (num_classes, num_classes) where 
     C[i, j] is the count of observations known to be in group i and predicted to be in group j.
     """
-    raise NotImplementedError("Function not implemented")
+    confusion_matrix = np.zeros((num_classes, num_classes), dtype=int)
+    for true_label, pred_label in zip(y_true, y_pred):
+        confusion_matrix[true_label, pred_label] += 1
+    return confusion_matrix
 
 def calculate_class_centroids(X: np.ndarray, labels: np.ndarray, num_classes: int) -> np.ndarray:
     """
@@ -67,4 +74,9 @@ def calculate_class_centroids(X: np.ndarray, labels: np.ndarray, num_classes: in
     Returns a 2D array of shape (num_classes, features).
     If a class has no examples, its centroid should be an array of zeros.
     """
-    raise NotImplementedError("Function not implemented")
+    centroids = np.zeros((num_classes, X.shape[1]))
+    for i in range(num_classes):
+        mask = labels == i
+        if np.any(mask):
+            centroids[i] = np.mean(X[mask], axis=0)
+    return centroids
