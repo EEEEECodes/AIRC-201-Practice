@@ -11,15 +11,12 @@ def run_experiments():
     
     for strategy in [1, 2, 3]:
         for trial in range(trials):
-            # BUG 1 FIX: seed on `trial`, not `strategy`
+            # Set random seed
             np.random.seed(42 + trial)
-            
+
             # Initialize bins and balls
             bins = np.zeros(M, dtype=int)
             max_balls = 0
-            
-            # BUG 2 FIX: removed the `if strategy == 3: curr_strat += 1` block
-            # curr_strat should simply equal strategy (1, 2, or 3 choices respectively)
             curr_strat = strategy
 
             for t in range(N):
@@ -30,8 +27,6 @@ def run_experiments():
                 
                 # Choose bin
                 best_choices = [c for c in choices if bins[c] == min_balls]
-                
-                # BUG 3 FIX: use `min()` to pick smallest index among tied bins, not `max()`
                 chosen_bin = min(best_choices)
                 
                 # Update bin and results
