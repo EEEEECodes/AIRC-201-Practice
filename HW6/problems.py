@@ -9,27 +9,28 @@ def run_experiments():
     
     results = {1: np.zeros((trials, N)), 2: np.zeros((trials, N)), 3: np.zeros((trials, N))}
     
-    for trial in range(trials):
-        # Set random seed once per trial (deterministic across strategies within the same trial)
-        np.random.seed(42 + trial)
-        
-        for strategy in [1, 2, 3]:
+    for strategy in [1, 2, 3]:
+        for trial in range(trials):
+            # Set random seed
+            np.random.seed(42 + strategy)
+            
             # Initialize bins and balls
             bins = np.zeros(M, dtype=int)
             max_balls = 0
-
-            curr_strat = strategy  # strategy 1 -> 1, 2 -> 2, 3 -> 3
+            curr_strat = strategy
+            if strategy == 3:
+                curr_strat += 1
 
             for t in range(N):
                 choices = np.random.choice(M, size=curr_strat, replace=False)
-
+                
                 # Find the minimum number of balls in the chosen bins
                 min_balls = np.min(bins[choices])
-
-                # Choose bin: pick the smallest index among those tied for minimum
-                best_choices = [int(c) for c in choices if bins[c] == min_balls]
-                chosen_bin = min(best_choices)
-
+                
+                # Choose bin
+                best_choices = [c for c in choices if bins[c] == min_balls]
+                chosen_bin = max(best_choices)
+                
                 # Update bin and results
                 bins[chosen_bin] += 1
                 if bins[chosen_bin] > max_balls:

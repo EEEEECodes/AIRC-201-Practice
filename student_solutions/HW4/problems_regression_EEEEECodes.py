@@ -10,7 +10,7 @@ results_dir = os.path.join(script_dir, "results")
 os.makedirs(results_dir, exist_ok=True)
 
 # Set random seed
-np.random.seed(67)
+np.random.seed(69420)
 
 # Generate messy data: mostly linear with gaussian noise
 n_samples = 100
@@ -32,7 +32,9 @@ predictions = {}
 
 # TODO: Scale the predictor variable X using StandardScaler.
 #       Remember to also transform X_plot so your lines are rendered correctly!
-
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+X_plot_scaled = scaler.transform(X_plot)
 
 # TODO: Train Ridge regression models using three alpha values: 0.01, 1, and 100.
 #       For each alpha:
@@ -40,7 +42,10 @@ predictions = {}
 #         2. Fit the model on your scaled training data and y.
 #         3. Generate predictions on the scaled X_plot data.
 #         4. Save the prediction array into the `predictions` dictionary with the alpha as the key.
-
+for alpha in [0.01, 1, 100]:
+    model = Ridge(alpha=alpha)
+    model.fit(X_scaled, y)
+    predictions[alpha] = model.predict(X_plot_scaled)
 
 # END STUDENT IMPLEMENTATION HERE
 
